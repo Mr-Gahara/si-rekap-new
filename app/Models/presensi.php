@@ -37,7 +37,8 @@ class Presensi extends Model
 
     public function mahasiswa()
     {
-        return $this->belongsTo(Mahasiswa::class, 'id_mahasiswa', 'id_mahasiswa');
+        // return $this->belongsTo(Mahasiswa::class, 'id_mahasiswa', 'id_mahasiswa');
+        return $this->belongsTo(Mahasiswa::class, 'id_mahasiswa');
     }
 
     public function revisi_presensi()

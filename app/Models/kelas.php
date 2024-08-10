@@ -36,8 +36,8 @@ class Kelas extends Model
     // menentukan relasi tabel
     public function mahasiswa()
     {
-        return $this->hasOne(Mahasiswa::class,'id_kelas','id_kelas');
-
+        // return $this->hasOne(Mahasiswa::class,'id_kelas','id_kelas');
+        return $this->hasMany(Mahasiswa::class, 'id_kelas');
     }
     public function jadwal()
     {

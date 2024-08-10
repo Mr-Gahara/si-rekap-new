@@ -68,11 +68,19 @@ class Mahasiswa extends Model
 
         public function kelas()
         {
-            return $this->hasMany(Kelas::class,'id_kelas','id_kelas');
+            // return $this->belongsTo(Kelas::class,'id_kelas','id_kelas');
+            return $this->belongsTo(Kelas::class, 'id_kelas');
         }
 
         public function presensi()
         {
-            return $this->hansOne(Presensi::class,'id_mahasiswa','id_mahasiswa');
+            // return $this->hasOne(Presensi::class,'id_mahasiswa','id_mahasiswa');
+            return $this->hasMany(Presensi::class, 'id_mahasiswa');
+        }
+
+        public function sp()
+        {
+            // return $this->belongsTo(Sp::class, 'id_mahasiswa', 'id_mahasiswa');
+            return $this->hasMany(Sp::class, 'id_mahasiswa');
         }
 }
