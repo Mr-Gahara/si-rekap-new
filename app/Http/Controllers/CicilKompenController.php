@@ -14,32 +14,32 @@ class CicilKompenController extends Controller
     public function DashboardCicil(Request $request)
     {
         try {
-            // $cicil = Cicil_kompen::select('jenis_kompen', 'tgl_cicil', 'jlh_jam_konversi')->get();
-            // $totalJamKonversi = Cicil_kompen::sum('jlh_jam_konversi');
-            // return response()->json([
-            //     'status' => 200,
-            //     'CicilAll' => $cicil,
-            //     'TotalJamKonversi' => $totalJamKonversi
+            $cicil = Cicil_kompen::select('jenis_kompen', 'tgl_cicil', 'jlh_jam_konversi')->get();
+            $totalJamKonversi = Cicil_kompen::sum('jlh_jam_konversi');
+            return response()->json([
+                'status' => 200,
+                'CicilAll' => $cicil,
+                'TotalJamKonversi' => $totalJamKonversi
                 
-            // ], 200);
+            ], 200);
 
-            $userId = $request->user()->id;
-            $cicil = Cicil_kompen::all()
-            ->where('id_mahasiswa', $userId);
+            // $userId = $request->user()->id;
+            // $cicil = Cicil_kompen::all()
+            // ->where('id_mahasiswa', $userId);
 
-            $totalJamKonversi = $cicil->sum('jlh_jam_konversi');
+            // $totalJamKonversi = $cicil->sum('jlh_jam_konversi');
 
-            $data = $cicil->map(function ($cicil) {
-                return [
-                    'jenis kompen' => $cicil->jenis_kompen,
-                    'tanggal cicil' => $cicil->tgl_cicil,
-                    'jumlah jam konversi' => $cicil->jlh_jam_konversi,
-                ];
-            });
+            // $data = $cicil->map(function ($cicil) {
+            //     return [
+            //         'jenis kompen' => $cicil->jenis_kompen,
+            //         'tanggal cicil' => $cicil->tgl_cicil,
+            //         'jumlah jam konversi' => $cicil->jlh_jam_konversi,
+            //     ];
+            // });
 
             return response()->json([
                 'status' => 200,
-                'data' => $data,
+                'data' => $cicil,
                 'TotalJamKonversi' => $totalJamKonversi
                 
             ], 200);
