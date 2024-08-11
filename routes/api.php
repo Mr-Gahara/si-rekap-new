@@ -8,6 +8,7 @@ use App\Http\Controllers\RevisiPresensiController;
 use App\Http\Controllers\KompenMahasiswaController;
 
 Route::get('/Dashboard-sp',[spController::class, 'Dashboardsp']); 
+Route::get('/Detail-sp',[spController::class, 'DetailSp']); 
 // (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
