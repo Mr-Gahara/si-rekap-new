@@ -32,3 +32,9 @@ Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
 Route::get('/Dashboard-Mahasiswa', [MahasiswaController::class, 'DashboardMahasiswa']);
+
+Route::get('/Dashboard-Revisi-Presensi', [RevisiPresensiController::class, 'DashboardRevisiPresensi'])->name('revisi-presensi.dashboard');
+Route::post('/upload-revisi-presensi', [RevisiPresensiController::class, 'uploadRevisiPresensi']);
+Route::post('/update-status-kehadiran/{id_presensi}', [RevisiPresensiController::class, 'updateStatusKehadiran']);
+Route::post('/add-deskripsi/{id_revisi}', [RevisiPresensiController::class, 'addDeskripsi']);
+

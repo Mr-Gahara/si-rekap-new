@@ -11,6 +11,8 @@ class Revisi_presensi extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $table = 'revisi_presensi';
 
     protected $primaryKey = 'id_revisi_presensi';
@@ -26,9 +28,11 @@ class Revisi_presensi extends Model
         'bukti_revisi',
         'created_at',
         'revisi',
+        'file_path', // Tambahkan kolom file_path di sini
     ];
+
     // menentukan relasi tabel
-    public function presensi ()
+    public function presensi()
     {
         return $this->belongsTo(Presensi::class, 'id_presensi', 'id_presensi');
     }

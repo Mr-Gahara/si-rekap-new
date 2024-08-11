@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('bukti_revisi');
             $table->date('created_at')->nullable();
             $table->string('revisi');
+            $table->string('file_path')->nullable();
         });
     }
 
