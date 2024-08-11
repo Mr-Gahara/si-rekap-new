@@ -15,8 +15,8 @@ return new class extends Migration
             $table->unsignedBigInteger('id_jadwal');
             $table->unsignedBigInteger('id_dosen');
             $table->date('tanggal');
-            $table->string('pkk_bhsn');
-            $table->string('spkk_bhsn');
+            $table->longText('pkk_bhsn');
+            $table->longText('spkk_bhsn');
             $table->string('media');
             $table->time('jam_ajar');
         });
