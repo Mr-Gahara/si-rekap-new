@@ -1,12 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-use App\Models\Mahasiswa;
 use App\Models\Sp;
-use App\Models\Kelas;
-use App\Models\Presensi;
 
 class SpController extends Controller
 {
