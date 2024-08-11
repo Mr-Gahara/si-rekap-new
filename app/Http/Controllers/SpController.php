@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Sp;
+use App\Models\Mahasiswa;
 
 class SpController extends Controller
 {
