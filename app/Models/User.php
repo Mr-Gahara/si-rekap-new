@@ -2,31 +2,28 @@
 
 namespace App\Models;
 
+use Illuminate\Foundation\Auth\User as Authenticatable; // Extend this class
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-// hubungkan model model yang diperlukan
-use app\Models\Dosen;
-use app\Models\Mahasiswa;
-use app\Models\Admin;
-
-class User extends Model
+class User extends Authenticatable // Extend Authenticatable, not Model
 {
-    use HasFactory;
+    use HasApiTokens, Notifiable, HasFactory;
 
-    // menghubungkan nama tabel dengan model
+    // Specify the table name if different from 'users'
     protected $table = 'users';
 
-    // menentukan primary key pada kolom tabel
+    // Define the primary key column
     protected $primaryKey = 'id';
 
-    // menentukan apakah primary key auto increment pada tabel
+    // Set primary key to auto-increment
     public $incrementing = true;
 
-    // menentukan tipe data primary key
+    // Define the key type
     protected $keyType = 'int';
 
-    // menentukan kolom kolom lain pada tabel (yang bukan primary key)
+    // Fillable attributes
     protected $fillable = [
         'name',
         'username',
@@ -35,7 +32,18 @@ class User extends Model
         'created_at',
     ];
 
-    // menentukan relasi tabel
+    // Hidden attributes
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    // Casts attributes to native types
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    // Define relationships
     public function dosen()
     {
         return $this->hasOne(Dosen::class, 'user_id', 'id');
@@ -48,6 +56,6 @@ class User extends Model
 
     public function admin()
     {
-        return $this ->hasOne(Admin::class, 'user_id', 'id');
+        return $this->hasOne(Admin::class, 'user_id', 'id');
     }
 }

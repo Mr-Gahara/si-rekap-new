@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
 use Illuminate\View\View;
+// use App\Helpers\ResponseFormatter;
+use Exception;
 
 class RegisteredUserController extends Controller
 {
@@ -27,24 +29,54 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+        try {
+            $request->validate([
+            
+                'name' => ['required', 'string', 'max:255'],
+                'username' => ['required', 'string', 'max:255'],
+                'password' => ['required', Rules\Password::defaults()],
+                'role' => ['required', 'integer', 'max:11']
+            ]);
+    
+            $user = User::create([
+                'name' => $request->name,
+                'username' => $request->username,
+                'password' => Hash::make($request->password),
+                'role' => $request->role
+            ]);
+    
+            $tokenResult = $user->createToken('authToken')->plainTextToken;
+    
+            // return ResponseFormatter::success([
+            //     'access_token' => $tokenResult,
+            //     'user' => $user,
+            // ], 'User Registered');
+            
+            return response()->json([
+                'status' => 200,
+                'access_token' => $tokenResult,
+                'user' => $user,
+            ], 200);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        } catch (\Throwable $th) {
+            // Default kode status HTTP untuk kesalahan server
+            $statusCode = is_int($th->getCode()) && $th->getCode() >= 100 && $th->getCode() <= 599 ? $th->getCode() : 500;
 
-        event(new Registered($user));
+            return response()->json([
+                "error" => $th->getMessage(),
+            ], $statusCode);
+        }
 
-        Auth::login($user);
+        
 
-        return redirect(route('dashboard', absolute: false));
+
+
+        // event(new Registered($user));
+
+        // Auth::login($user);
+
+        // return redirect(route('dashboard', absolute: false));
     }
 }

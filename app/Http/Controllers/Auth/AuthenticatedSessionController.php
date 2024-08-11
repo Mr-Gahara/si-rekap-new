@@ -8,6 +8,10 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+
+use App\Models\User;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -22,14 +26,14 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+    // public function store(LoginRequest $request): RedirectResponse
+    // {
+    //     $request->authenticate();
 
-        $request->session()->regenerate();
+    //     $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
-    }
+    //     return redirect()->intended(route('dashboard', absolute: false));
+    // }
 
     /**
      * Destroy an authenticated session.
@@ -43,5 +47,48 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         return redirect('/');
+    }
+
+    public function store(Request $request)
+    {
+        try 
+        {
+
+            $request->validate([
+                'username' => 'required|string',
+                'password' => 'required|string',
+            ]);
+
+            $credentials = $request->only('username', 'password');
+
+            $user = User::where('username', $credentials['username'])->first();
+
+            // Check if the user exists and the password matches
+            if ($user && Hash::check($request->password, $user->password)) {
+                // Create a new token for the user
+                $tokenResult = $user->createToken('authToken')->plainTextToken;
+
+                // Return the token and user data
+                return response()->json([
+                    'status' => 200,
+                    'access_token' => $tokenResult,
+                    'user' => $user,
+                ], 200);
+            }
+
+            // If authentication fails, return an error
+            return response()->json([
+                'status' => 401,
+                'message' => 'The provided credentials do not match our records.',
+            ], 401);
+
+        } catch (\Throwable $th) {
+            // Default HTTP status code for server error
+            $statusCode = is_int($th->getCode()) && $th->getCode() >= 100 && $th->getCode() <= 599 ? $th->getCode() : 500;
+
+            return response()->json([
+                "error" => $th->getMessage(),
+            ], $statusCode);
+        }
     }
 }
