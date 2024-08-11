@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MahasiswaController;
 
 Route::get('/Dashboard-sp',[spController::class, 'Dashboardsp']); 
+Route::get('/Detail-sp',[spController::class, 'DetailSp']); 
 // (Request $request) {
 //     return $request->user();
 // })->middleware('auth:sanctum');
