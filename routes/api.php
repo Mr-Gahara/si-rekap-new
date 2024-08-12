@@ -21,6 +21,7 @@ Route::get('/Dashboard-cicil',[CicilKompenController::class, 'DashboardCicil']);
 Route::post("/Tambah-cicil", [CicilKompenController::class, 'tambahCicilKompen']);
 Route::patch('/Update-cicil', [CicilKompenController::class, 'updateCicilKompen']);
 Route::delete('/Delete-cicil', [CicilKompenController::class, 'deleteCicilKompen']);
+Route::get('/Laporan-cicil',[CicilKompenController::class, 'LaporanCicil']);
 
 Route::get('/Dashboard-Kompen',[KompenMahasiswaController::class,'Dashboard_Kompen']);
 

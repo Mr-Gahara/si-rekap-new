@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Cicil_kompen;
+use App\Models\Kompen_mahasiswa;
 use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class CicilKompenController extends Controller
 {
@@ -175,6 +177,34 @@ class CicilKompenController extends Controller
 
         }
 
+    }
+
+    public function LaporanCicil() {
+        try {
+            $table = DB::table("Cicil_kompen")
+            ->join("mahasiswa", "Cicil_kompen.id_mahasiswa", "=", "mahasiswa.id_mahasiswa")
+            ->join('kelas', 'mahasiswa.id_kelas', '=', 'kelas.id_kelas')
+            ->select("mahasiswa.id_mahasiswa","mahasiswa.nama as Nama_Mahasiswa","mahasiswa.nim as NIM", "kelas.abjad_kls as Kelas", "kelas.smt as Semester")
+            ->get();
+
+            $data = $table->map(function($item) {
+                $total = Kompen_mahasiswa::where('id_mahasiswa', $item->id_mahasiswa)->sum('jumlah_kompen');
+                $item->totalKompen = $total ?? 0;
+                return $item;
+            });
+            
+            return response()->json([
+                'status' => 200,
+                'LaporanCicil' => $data,
+               
+            ], 200);
+        } catch (\Throwable $th) {
+            $statusCode = is_int($th->getCode()) && $th->getCode() >= 100 && $th->getCode() <= 599 ? $th->getCode() : 500;
+
+            return response()->json([
+                "error" => $th->getMessage()
+            ], $statusCode);
+        }
     }
 }
 
