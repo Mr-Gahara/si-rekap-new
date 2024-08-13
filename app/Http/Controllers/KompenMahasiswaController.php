@@ -60,7 +60,7 @@ class KompenMahasiswaController extends Controller
         }
     } 
 
-    public function Profil_Kompen(Request $request)
+    public function Profil_Kompen(String $id, Request $request)
     {
         try {
             // $user = $request->user();
@@ -87,7 +87,7 @@ class KompenMahasiswaController extends Controller
 
 
         // Retrieve the id_mahasiswa from the request parameters
-        $id_mahasiswa = 1;
+        $id_mahasiswa = $id;
 
         // Check if id_mahasiswa is provided
         if (!$id_mahasiswa) {

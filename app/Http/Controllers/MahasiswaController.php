@@ -13,10 +13,10 @@ use App\Models\Presensi;
 
 class MahasiswaController extends Controller
 {
-    public function DashboardMahasiswa() {
+    public function DashboardMahasiswa(String $id) {
         try {
 
-            $id_mahasiswa = 1;
+            $id_mahasiswa = $id;
 
             // Perform the database queries using $id_mahasiswa
             $jumlahKehadiran = DB::table('presensi')

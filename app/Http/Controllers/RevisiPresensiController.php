@@ -24,8 +24,7 @@ class RevisiPresensiController extends Controller
                     'mahasiswa.nama as Nama_mahasiswa',
                     'matkul.nama_matkul as Mata_kuliah',
                     'presensi.status as keterangan'
-                )
-                ->get();
+                )->get();
 
             return response()->json([
                 'status' => 200,
