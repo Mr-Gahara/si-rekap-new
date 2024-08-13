@@ -44,28 +44,35 @@ class RevisiPresensiController extends Controller
     public function uploadRevisiPresensi(Request $request)
     {
         $request->validate([
-            'file' => 'required|mimes:pdf|max:3072', // Validasi untuk PDF dan ukuran maksimal 3MB
-            'id_presensi' => 'required|integer', // Validasi untuk id_presensi
+            'file_path' => 'required|mimes:pdf|max:3096', // Validasi untuk PDF dan ukuran maksimal 3MB
+            'id_presensi' => 'required', // Validasi untuk id_presensi
         ]);
 
         try {
             // Simpan file yang diunggah
-            $path = $request->file('file')->store('uploads/revisi_presensi');
-
+            $path = $request->file('file_path');
+            $pathnm;
+            if (!$path) {
+                $path = "Tidak Ada File yang Diunggah";   
+            } else {
+                $pathnm = $path->getClientOriginalName();
+                $path->storeAs($pathnm);
+            };
             // Simpan path file dan data lain yang diperlukan ke dalam database
             Revisi_presensi::create([
+                'id_revisi_presensi' => $request->input('id_revisi_presensi'),
                 'id_presensi' => $request->input('id_presensi'), // Menyimpan id_presensi
                 'tanggal_revisi' => $request->input('tanggal_revisi'),
+                'status' => $request->input('status'),
                 'bukti_revisi' => $request->input('bukti_revisi'),
                 'revisi' => $request->input('revisi'),
-                'file_path' => $path,
-                // Tambahkan field lain yang diperlukan untuk disimpan
+                'file_path' => $pathnm, //$path
             ]);
 
             return response()->json([
                 'status' => 200,
                 'message' => 'File berhasil diunggah',
-                'file_path' => $path,
+                'file_path' => $pathnm,
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([

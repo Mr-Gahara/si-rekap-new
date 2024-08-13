@@ -64,7 +64,6 @@ class KompenMahasiswaController extends Controller
     {
         try {
             // $user = $request->user();
-
             // $id_mahasiswa = $user->id_mahasiswa;
     
             // $mahasiswa = Mahasiswa::where('id_mahasiswa', $id_mahasiswa)->first();
@@ -88,7 +87,7 @@ class KompenMahasiswaController extends Controller
 
 
         // Retrieve the id_mahasiswa from the request parameters
-        $id_mahasiswa = $request->input('id_mahasiswa');
+        $id_mahasiswa = 1;
 
         // Check if id_mahasiswa is provided
         if (!$id_mahasiswa) {

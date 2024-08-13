@@ -9,6 +9,7 @@ use App\Http\Controllers\KompenMahasiswaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\MahasiswaController;
+use App\Models\Revisi_presensi;
 
 Route::get('/Dashboard-sp',[spController::class, 'Dashboardsp']); 
 Route::get('/Detail-sp',[spController::class, 'DetailSp']); 
@@ -39,4 +40,3 @@ Route::get('/Dashboard-Revisi-Presensi', [RevisiPresensiController::class, 'Dash
 Route::post('/upload-revisi-presensi', [RevisiPresensiController::class, 'uploadRevisiPresensi']);
 Route::post('/update-status-kehadiran/{id_presensi}', [RevisiPresensiController::class, 'updateStatusKehadiran']);
 Route::post('/add-deskripsi/{id_revisi}', [RevisiPresensiController::class, 'addDeskripsi']);
-
