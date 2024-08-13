@@ -138,13 +138,27 @@ class KompenMahasiswaController extends Controller
         // Return the response as JSON
         return response()->json([
             'status' => 200,
-            'nama_mahasiswa' => $data->nama,
-            'foto' => $data->foto,
-            'status_mahasiswa' => $data->status_mahasiswa,
-            'jumlah_kompensasi' => $data->jumlah_kompensasi,
-            'jumlah_absensi_izin' => $data->jumlah_absensi_izin,
-            'jumlah_absensi_sakit' => $data->jumlah_absensi_sakit,
-            'jumlah_absensi_alpha' => $data->jumlah_absensi_alpha,
+
+            
+            // 'nama_mahasiswa' => $data->nama,
+            // 'foto' => $data->foto,
+            // 'status_mahasiswa' => $data->status_mahasiswa,
+            // 'jumlah_kompensasi' => $data->jumlah_kompensasi,
+            // 'jumlah_absensi_izin' => $data->jumlah_absensi_izin,
+            // 'jumlah_absensi_sakit' => $data->jumlah_absensi_sakit,
+            // 'jumlah_absensi_alpha' => $data->jumlah_absensi_alpha,
+
+            'profil_mahasiswa' => [
+                'nama_mahasiswa' =>$data->nama,
+                'foto' => $data->foto,
+            ],
+            'data' => [
+                'status_mahasiswa' => $data->status_mahasiswa,
+                'jumlah_kompensasi' => $data->jumlah_kompensasi,
+                'jumlah_absensi_izin' => $data->jumlah_absensi_izin,
+                'jumlah_absensi_sakit' => $data->jumlah_absensi_sakit,
+                'jumlah_absensi_alpha' => $data->jumlah_absensi_alpha,
+            ],
         ], 200);
 
         } catch (\Throwable $th) {
