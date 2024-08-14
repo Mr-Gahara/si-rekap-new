@@ -50,7 +50,7 @@ class RevisiPresensiController extends Controller
         try {
             // Simpan file yang diunggah
             $path = $request->file('file_path');
-            $pathnm;
+            // $pathnm;
             if (!$path) {
                 $path = "Tidak Ada File yang Diunggah";   
             } else {
@@ -72,46 +72,6 @@ class RevisiPresensiController extends Controller
                 'status' => 200,
                 'message' => 'File berhasil diunggah',
                 'file_path' => $pathnm,
-            ], 200);
-        } catch (\Throwable $th) {
-            return response()->json([
-                "error" => $th->getMessage()
-            ], 500);
-        }
-    }
-
-    public function generatePdf()
-    {
-        try {
-            // Ambil data dari tabel revisi_presensi beserta data terkait
-            $data = Revisi_presensi::with('presensi')->get();
-
-            // Generate PDF dari view yang sudah dibuat
-            $pdf = PDF::loadView('pdf_view', compact('data'));
-
-            // Tentukan nama file PDF yang akan disimpan
-            $fileName = 'revisi_presensi_' . time() . '.pdf';
-
-            // Simpan file PDF ke storage sementara dan ambil kontennya
-            $tempFilePath = storage_path('app/temp/' . $fileName);
-            Storage::put('temp/' . $fileName, $pdf->output());
-
-            // Baca isi file PDF dan simpan ke database sebagai binary atau base64
-            $pdfContent = file_get_contents($tempFilePath);
-            $pdfBase64 = base64_encode($pdfContent);
-
-            // Simpan konten PDF yang di-encode ke dalam kolom file_path di database
-            $revisiPresensi = new Revisi_presensi();
-            $revisiPresensi->file_path = $pdfBase64;
-            $revisiPresensi->save();
-
-            // Hapus file sementara setelah dibaca
-            unlink($tempFilePath);
-
-            return response()->json([
-                'status' => 200,
-                'message' => 'PDF berhasil dibuat dan disimpan ke database',
-                'pdf_data' => $pdfBase64,
             ], 200);
         } catch (\Throwable $th) {
             return response()->json([
