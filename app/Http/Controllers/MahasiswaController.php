@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -13,10 +12,18 @@ use App\Models\Presensi;
 
 class MahasiswaController extends Controller
 {
-    public function DashboardMahasiswa(String $id) {
+    public function DashboardMahasiswa(String $id, Request $request) {
         try {
 
+            // Retrieve the id_mahasiswa from the request parameters
             $id_mahasiswa = $id;
+
+            // Check if id_mahasiswa is provided
+            if (!$id_mahasiswa) {
+                return response()->json([
+                    "error" => "id_mahasiswa parameter is required",
+                ], 400); // Bad Request
+            }
 
             // Perform the database queries using $id_mahasiswa
             $jumlahKehadiran = DB::table('presensi')

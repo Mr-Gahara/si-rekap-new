@@ -31,10 +31,24 @@ class SpController extends Controller
                     'mahasiswa.ket_status as surat_peringatan'
                 )
                 ->get();
+            
+            $formattedData = [];
+
+            // Iterasi setiap item dalam koleksi data
+            foreach ($data as $item) {
+                $formattedData[] = [
+                    'NO' => $item->no,
+                    'Nama_Mahasiswa' => $item->nama_mahasiswa,
+                    'NIM' => $item->nim,
+                    'Kelas' => $item->kelas,
+                    'Presensi' => $item->ketidakhadiran,
+                    'Surat_Peringatan' => $item->surat_peringatan
+                ];
+            }
 
             return response()->json([
                 'status' => 200,
-                'data' => $data,
+                'data' => $formattedData, 
                 'summary' => [
                     'SP1' => $SuratPeringatan1,
                     'SP2' => $SuratPeringatan2,
